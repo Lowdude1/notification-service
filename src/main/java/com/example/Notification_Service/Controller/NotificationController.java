@@ -30,12 +30,12 @@ public class NotificationController {
         return service.createNotification(request);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/{userId}")
     public List<NotificationResponse> getByUser(@PathVariable Long userId) {
         return service.getNotificationForUser(userId);
     }
 
-    @PatchMapping("/{id}/read")
+    @PatchMapping("/{notificationId}/read")
     public void markAsRead(@PathVariable Long notificationId) {
         service.markAsRead(notificationId);
     }
