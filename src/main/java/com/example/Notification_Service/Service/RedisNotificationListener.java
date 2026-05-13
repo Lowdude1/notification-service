@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class RedisNotificationListener {
+
     private final NotificationService notificationService;
+    private final com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 
     public void onMessage(String message, String channel) {
-        NotificationRequest request = new NotificationRequest(1L, message);
-
-        notificationService.createNotification(request);
-
-        System.out.println("Уведомление успешно сохранено в БД");
+        try {
+            NotificationRequest request = objectMapper.readValue(message, NotificationRequest.class);
+            notificationService.createNotification(request);
+            System.out.println("Получен JSON: " + request);
+        } catch (Exception e) {
+            System.out.println("Ошибка парсинга JSON: " + e.getMessage());
+        }
     }
 }
